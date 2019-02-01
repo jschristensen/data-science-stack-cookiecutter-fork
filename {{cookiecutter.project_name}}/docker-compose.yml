@@ -5,7 +5,7 @@ services:
 
   # Computation
   jupyter:
-    container_name: "{{cookiecutter.project_name}}_jupyter"
+    container_name: "test_jupyter"
     restart: "always"
     build: services/jupyter
     env_file:
@@ -22,7 +22,7 @@ services:
 
   # Visualization
   superset:
-    container_name: "{{cookiecutter.project_name}}_superset"
+    container_name: "test_superset"
     restart: "always"
     image: tylerfowler/superset:0.24
     depends_on:
@@ -35,23 +35,23 @@ services:
 
   # Misc Storage
   postgres:
-    container_name: "{{cookiecutter.project_name}}_postgres"
+    container_name: "test_postgres"
     restart: "always"
-    image: postgres
+    image: mdillon/postgis:9.6
     env_file:
       - ./config/postgres.env
       - ./config/superset_database.env
       - ./config/airflow_database.env
       - ./config/shared_database.env
     volumes:
-      - postgres_volume:/var/lib/postgresql/data/
+      - postgres_volume:/var/lib/postgresql/data
       - ./services/postgres/:/docker-entrypoint-initdb.d/
     ports:
       - 5432:5432
 
   # Scheduling
   airflow:
-    container_name: "{{cookiecutter.project_name}}_airflow"
+    container_name: "test_airflow"
     restart: "always"
     image: puckel/docker-airflow:1.9.0-2
     depends_on:
@@ -69,7 +69,7 @@ services:
 
   # Model Storage
   minio:
-    container_name: "{{cookiecutter.project_name}}_minio"
+    container_name: "test_minio"
     restart: "always"
     image: minio/minio
     env_file:
@@ -82,7 +82,7 @@ services:
 
   # API
   apistar:
-    container_name: "{{cookiecutter.project_name}}_apistar"
+    container_name: "test_apistar"
     restart: "always"
     build: services/apistar
     env_file:
@@ -95,7 +95,7 @@ services:
 
   # Admin Overview
   portainer:
-    container_name: "{{cookiecutter.project_name}}_portainer"
+    container_name: "test_portainer"
     restart: "always"
     image: portainer/portainer
     volumes:
